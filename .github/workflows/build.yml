@@ -1,37 +1,43 @@
-name: Build Next.js App and Commit .next Folder
+name: Build Next.js App, Run Tests, and Commit .next Folder
 
 on:
   push:
     branches:
-      - main  # Trigger this action on push to main branch
+      - main  # Trigger this action on push to the main branch
   pull_request:
     branches:
-      - main  # Trigger this action on pull request to main branch
+      - main  # Trigger this action on pull request to the main branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository code
+      # Step 1: Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Node.js
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'  # Specify the Node.js version you're using
 
-      # Install dependencies
+      # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install --force --legacy-peer-deps
+        run: npm install
 
-      # Build the app
-      - name: Build the Next.js app
-        run: npm run build
+      # Step 4: Run tests
+      - name: Run tests
+        run: npm run test  # Make sure you have a test script in your package.json
 
-      # Commit .next folder (or any other artifacts) to the repo
+      # Step 5: Set Node.js memory limit to the maximum available
+      - name: Set Node.js memory limit for build (16GB)
+        run: |
+          export NODE_OPTIONS="--max-old-space-size=16384"  # 16GB memory limit
+          npm run build  # Run the build process
+
+      # Step 6: Commit .next folder (or any other artifacts) to the repo
       - name: Commit .next folder
         run: |
           git config --global user.name "GitHub Actions"
@@ -39,5 +45,3 @@ jobs:
           git add .next
           git commit -m "Add .next folder after build"
           git push
-
-      # Optional: You can add any other steps like testing, deployment, etc.
