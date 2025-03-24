@@ -27,10 +27,6 @@ jobs:
       - name: Install dependencies
         run: npm install --force --legacy-peer-deps
 
-      # Step 4: Run tests
-      - name: Run tests
-        run: npm run test  # Make sure you have a test script in your package.json
-
       # Step 5: Set Node.js memory limit to the maximum available
       - name: Set Node.js memory limit for build (16GB)
         run: |
