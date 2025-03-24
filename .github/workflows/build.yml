@@ -30,7 +30,7 @@ jobs:
       # Step 5: Set Node.js memory limit to the maximum available
       - name: Set Node.js memory limit for build (16GB)
         run: |
-          export NODE_OPTIONS="--max-old-space-size=64000"  # 16GB memory limit
+          export NODE_OPTIONS="--max-old-space-size=65536"  # 16GB memory limit
           npm run build  # Run the build process
 
       # Step 6: Commit .next folder (or any other artifacts) to the repo
